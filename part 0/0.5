@@ -1,0 +1,16 @@
+title Enter SPA
+
+Browser -> Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+Server --> Browser : HTML code
+Browser->Server:HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+Server --> Browser: HTML-code
+Browser->Server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+Server --> Browser:main.css
+Browser->Server:HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+Server --> Browser:main.js
+note right of Browser: browser starts executuing js-code that requests JSON data from server
+Browser->Server:HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+Server --> Browser: [{content: "HTML is easy", date:"2019-05-23"},...]
+note right of Browser: browser excutes the event handler that renders notes to display
+
+link:https://www.websequencediagrams.com/cgi-bin/cdraw?lz=dGl0bGUgRW50ZXIgU1BBCgpCcm93c2VyIC0-IFNlcnZlcjogSFRUUCBHRVQgaHR0cHM6Ly9mdWxsc3RhY2stZXhhbXBsZWFwcC5oZXJva3VhcHAuY29tL3NwYQoAOgYgLS0-IABOCDogSFRNTCBjb2RlAGIILT4AYQcAMzRub3RlcwBWEwBiBi0AUxUAgRs1bWFpbi5jcwBXFQATCQCBDkQAZAVqAE4aanMKbm90ZSByaWdodCBvZgCBaApiAIMzB3N0YXJ0cyBleGVjdXR1aW5nIGpzAIIFBSB0aGF0IHJlcXVlc3RzIEpTT04gZGF0YSBmcm9tIHMAg2kFAIJRRWRhdGEuanNvbgCDBRVbe2NvbnRlbnQ6ICIAhAkFaXMgZWFzeSIsIGRhdGU6IjIwMTktMDUtMjMifSwuLi5dAIFSIGV4Y3V0ZXMgdGhlIGV2ZW50IGhhbmRsZXIAgWoIbmRlcnMgAIQoBSB0byBkaXNwbGF5&s=default
