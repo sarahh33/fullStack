@@ -7,21 +7,25 @@ const Button=({ handleClick,text})=>(
 
 )
 
-const Display=({value,text})=>(
+const Statistic=({value,text})=>(
+  <tr>
 
-    <p>{text} : {value}</p>
+    <td>{text} : </td><td>{value}</td></tr>
 
 )
  const Statistics= ({good, bad, neutral})=>{
    const all = good+bad+neutral
    const ave= all/3
-   const positive = good/all*100
+   const positive = good/all*100+'%'
 
    return (
     <div>
-      <Display value ={all} text='all' />
-      <Display value ={ave} text ='average' />
-      <p>positive : {positive} %</p>
+      <Statistic value = {good} text = 'good' />
+      <Statistic value = {neutral} text = 'neutral' />
+      <Statistic value = {bad} text = 'bad' />
+      <Statistic value ={all} text='all' />
+      <Statistic value ={ave} text ='average' />
+      <Statistic value = {positive} text ='positive'/>
      </div>
    )
  }
@@ -31,9 +35,8 @@ const History=({good, bad, neutral})=>{
     return (<div>No feedback given</div>)
   }
   return (
-    <div><Display value = {good} text = 'good' />
-      <Display value = {neutral} text = 'neutral' />
-      <Display value = {bad} text = 'bad' />
+    <div>
+      
       <Statistics good={good} bad ={bad} neutral ={neutral}/></div>
 
   )
