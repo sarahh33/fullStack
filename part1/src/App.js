@@ -12,14 +12,42 @@ const Display=({value,text})=>(
     <p>{text} : {value}</p>
 
 )
+ const Statistics= ({good, bad, neutral})=>{
+   const all = good+bad+neutral
+   const ave= all/3
+   const positive = good/all*100
+
+   return (
+    <div>
+      <Display value ={all} text='all' />
+      <Display value ={ave} text ='average' />
+      <p>positive : {positive} %</p>
+     </div>
+   )
+ }
+
+const History=({good, bad, neutral})=>{
+  if (good+bad+neutral===0){
+    return (<div>No feedback given</div>)
+  }
+  return (
+    <div><Display value = {good} text = 'good' />
+      <Display value = {neutral} text = 'neutral' />
+      <Display value = {bad} text = 'bad' />
+      <Statistics good={good} bad ={bad} neutral ={neutral}/></div>
+
+  )
+
+}
+
 
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const [all,setAll]=useState(0)
- // const [positive, setPositive]=useState(0)
+  
+ 
 
   const setToValue=(setValue, newValue)=>()=>{setValue(newValue+1)}
   
@@ -32,12 +60,8 @@ const App = () => {
       <Button  handleClick={setToValue(setBad, bad)} text='bad'/>
 
       <h1>statistcs</h1>
-      <Display value = {good} text = 'good' />
-      <Display value = {neutral} text = 'neutral' />
-      <Display value = {bad} text = 'bad' />
-      <Display value ={bad+good+neutral} text='all' />
-      <Display value = {(bad+good+neutral)/3} text='average'/>
-      <p>positive : {good/(bad+good+neutral)*100} %</p>
+      <History good = {good} bad ={bad} neutral={neutral} />
+      
       
 
 
