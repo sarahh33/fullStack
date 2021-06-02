@@ -3,22 +3,35 @@ const Header= ({name})=>(<h1>{name}</h1>)
 
 
 const Content =({name,number})=>{
+  
     return(
-    <p>{name} {number}</p>
+        <p>{name} {number}</p> 
+    
     )
 }
 
+
+
+
+
 const Course = ({course})=>{
-    
+    var sum = course.parts.reduce(function (accumulator, currenPart) {
+        return accumulator + currenPart.exercises;
+      }, 0);
+      
     
     return (
         <div>
             <Header name = {course.name} />
-            <ul>
-                {course.parts.map(part => 
-                <Content key ={part.id} name = {part.name} number = {part.exercises}/>
-                ) }
-            </ul>
+            
+            {course.parts.map(part => 
+            <Content key ={part.id} name = {part.name} number = {part.exercises}/>
+            ) }
+            <p> total of {sum} exercises</p>
+
+            
+          
+            
             
             </div>
     )
@@ -44,6 +57,11 @@ const App = () => {
           name: 'State of a component',
           exercises: 14,
           id: 3
+        },
+        {
+            name:'Redux',
+            exercises:11,
+            id:4
         }
       ]
     }
