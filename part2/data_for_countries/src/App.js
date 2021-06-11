@@ -2,9 +2,20 @@ import {useState,useEffect} from 'react';
 import './App.css';
 import axios from 'axios'
 
+
+
 const Country=({country})=>{
+  const [show, setShow]=useState(true)
+  const detailToShow = show
+  ?''
+  : <Details key={country.index} country={country} />
+
   return(
-    <div>{country.name}</div>
+    <div>{country.name}
+    <button onClick={()=> {setShow(!show) }}>show</button>
+    {detailToShow}
+    </div>
+    
   )
 
 }
@@ -17,27 +28,54 @@ const Lan=({lan})=>{
 
 const Details=({country})=>{
   console.log(country)
+  
+  useEffect(()=>{
+    const params = {
+      access_key: '6af890b509b0d32c011e15ff55348dbb',
+      query: country.capital
+    }
+    console.log('effect2')
+    axios
+    .get('https://api.weatherstack.com/current', {params}).then(response=>{
+      
+    const apiResponse = response.data;
+    console.log(apiResponse)
+      console.log('Current temperature in ${apiResponse.location.name} is ${apiResponse.current.temperature}℃');
+    }).catch(error => {
+      console.log(error);
+    })
+  },[])
+
+
   return(
     <div><h1>{country.name}</h1>
     <p>capital: {country.capital} </p><p>population: {country.population}</p>
     <h3>languages</h3>
     <ul>{country.languages.map(lan => 
         <Lan key={lan.index} lan={lan} />)} </ul>
-    <img src='https://restcountries.eu/data/che.svg' width="100" 
+    <img src={country.flag} width="100" 
      ></img>
+
+     <h3>Weather in {country.name}</h3>
+     <p>temperature: </p>
+     
     </div>
   )
 }
-const Display=({a})=>
+const Display=({aCountry})=>
 {   
-  if (a.length<10){
-    if (a.length==1){
-      return (a.map(country => 
+  
+  if (aCountry.length<10){
+    if (aCountry.length==1){
+      return (aCountry.map(country => 
         <Details key={country.index} country={country} />))
     }
-  return(a.map(country => 
+  return(
+    aCountry.map(country => 
     <Country key={country.index} country={country} />
-  ))}
+  ))
+
+}
 
   else {
     return (<p>Too many matches, specify another filter</p>)
@@ -54,6 +92,7 @@ function App() {
     setCountry(event.target.value)
     
   }
+
 
   useEffect(()=>{
     console.log('effect')
@@ -72,7 +111,7 @@ function App() {
   return (
     <div>
       <label>find countries <input value ={country} onChange={handelCountryChange} /></label>
-      <Display a={countryToShow}/>
+      <Display aCountry={countryToShow}/>
       
       
     </div>
