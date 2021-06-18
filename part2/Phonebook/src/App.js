@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
-const Person = ({ person }) => {
+const Person = ({ person,deletRecord }) => {
   return (
-    <div>{person.name} {person.number}</div>
+    <li>{person.name} {person.number}
+    <button onClick={()=>{if (window.confirm(`Delete ${person.name}?`)) {deletRecord()
+}}}>delet</button></li>
   )
 }
 const Filter = ({ value, handle }) => {
@@ -29,14 +32,7 @@ const PersonForm = ({ add, valueNum, valueName, handleName, handleNum }) => {
   )
 
 }
-const Persons = ({ per }) => {
-  return (
 
-    per.map((person, i) => <Person key={i} person={person} />)
-
-
-  )
-}
 
 
 
@@ -49,12 +45,10 @@ const App = () => {
 
   useEffect(()=>{
     console.log('effect')
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response=>{
-      console.log('promise')
-      setPersons(response.data)
-    })
+    personService
+    .getAll()
+    .then(response=>{setPersons(response.data)})
+   
   },[])
 
   const addName = (event) => {
@@ -64,12 +58,20 @@ const App = () => {
       number: newNum
     }
     if (persons.some(person => person.name === newRecord.name)) {
-      alert(newName + ' is already added to phonebook')
+      
+      {if (window.confirm(newName + ' is already added to phonebook, replace the old number with a new one?')) 
+      {
+        personService
+        .updateOld(newRecord,personToShow.filter(n=> n.name===newRecord.name))
+        .then(response=>{setPersons(personToShow.map(person=> person.name!==newRecord.name?person:response.data))})
+      }}
+      
+      
     }
     else {
-      axios
-      .post('http://localhost:3001/persons',newRecord)
-      .then(response=>{setPersons(persons.concat(response.data))})
+      personService
+      .update(newRecord)
+      .then(response=>{setPersons(personToShow.concat(response.data))})
     }
     setNewName('')
     setNewNum('')
@@ -79,6 +81,18 @@ const App = () => {
   const handleNumChange = (event) => setNewNum(event.target.value)
   const handleSearch = (event) =>setSearch(event.target.value)
 
+  const deletRecordOf =(id)=>{
+    
+    const person = personToShow.find(n=> n.id===id)
+    
+    personService
+    .delet(id)
+    personService
+    .getAll()
+    .then(response=> {setPersons(response.data)})
+
+  }
+  
   const personToShow = (searchName == '')
     ? persons
     : persons.filter(person => person.name.toLowerCase() == searchName.toLowerCase())
@@ -92,7 +106,8 @@ const App = () => {
       <PersonForm add={addName} valueName={newName} handleName={handleNameChange} valueNum={newNum} handleNum={handleNumChange} />
 
       <h3>Numbers</h3>
-      <Persons per={personToShow} />
+      
+       {personToShow.map((person, i) => <Person key={i} person={person} deletRecord={()=>deletRecordOf(person.id)} />)}
 
     </div>
   )
