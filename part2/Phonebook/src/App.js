@@ -2,6 +2,25 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
 
+const Notification=({message})=>{
+  const notiStyle={
+    color: 'green',
+  background: 'lightgrey',
+  fontSize: 20,
+  borderStyle: 'solid',
+  borderRadius: 5,
+  padding: 10,
+  marginBottom: 10,
+  }
+  if (message ===null){
+    return null
+  }
+  return (
+    <div style={notiStyle}>{message}</div>
+  )
+
+}
+
 const Person = ({ person,deletRecord }) => {
   return (
     <li>{person.name} {person.number}
@@ -42,6 +61,7 @@ const App = () => {
   const [newNum, setNewNum] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [searchName, setSearch] = useState('')
+  const [errorMessage, setErrorMessage]= useState('something wrong happens')
 
   useEffect(()=>{
     console.log('effect')
@@ -64,14 +84,25 @@ const App = () => {
         personService
         .updateOld(newRecord,personToShow.filter(n=> n.name===newRecord.name))
         .then(response=>{setPersons(personToShow.map(person=> person.name!==newRecord.name?person:response.data))})
-      }}
-      
-      
+        .catch(error=>{
+          setErrorMessage(`Person '${newName}' was alredy moved from the server`)
+          setPersons(personToShow.filter(person=> person.name!== newName))
+        })
+        setErrorMessage(`'${newName}' was updated`)
+        setTimeout(()=>{
+          setErrorMessage(null)
+        },5000)
+        
+      }} 
     }
     else {
       personService
       .update(newRecord)
       .then(response=>{setPersons(personToShow.concat(response.data))})
+      setErrorMessage(`'${newName}' was added`)
+        setTimeout(()=>{
+          setErrorMessage(null)
+        },5000)
     }
     setNewName('')
     setNewNum('')
@@ -100,6 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message= {errorMessage}/>
       <Filter value={searchName} handle={handleSearch} />
 
       <h3>add a new</h3>
