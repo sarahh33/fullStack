@@ -19,7 +19,7 @@ const phoneSchema = new mongoose.Schema({
   number: String,
 })
 
-const Phone = mongoose.model('Note', phoneSchema)
+const Phone = mongoose.model('Person', phoneSchema)
 
 if (process.argv.length > 3) {
  const phone = new Phone({
