@@ -1,0 +1,5 @@
+POST http://localhost:3001/api/person/ Content-Type: application/json
+
+{
+"name": "From vs code rest client", "number": "131"
+}

@@ -69,36 +69,23 @@ app.delete('/api/persons/:id',(request, response)=>{
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :new'))
 
-app.post('/api/persons', (request, response)=>{
-    const getId = Math.floor(Math.random()*1000)
-     
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  console.log(body)
 
-    const body = request.body
-    if (!body.name) {
-      return response.status(400).json({ 
-        error: 'name missing' 
-      })
-    }
-    if (!body.number) {
-      return response.status(400).json({ 
-        error: 'number missing' 
-      })
-    }
+  if (body.name === undefined) {
+    return response.status(400).json({ error: 'content missing' })
+  }
 
-    const person={
-      content: body.content,
-      data: new Date(),
-      id: getId,
-    }
-    
-    if (persons.some(person=> person.name ===body.name)){
-      console.log(persons)
-      return response.status(400).json({ 
-        error: 'name must be unique'})
-    }
-    else{persons= persons.concat(person)
-    response.json(person)}
-    
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+    date: new Date(),
+  })
+
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
   
   const PORT = process.env.PORT 
