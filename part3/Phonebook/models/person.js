@@ -26,4 +26,4 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
       }
   })
 
-  module.exports = mongoose.model('Person', personSchema)
+  module.exports = mongoose.model('Phone', personSchema)

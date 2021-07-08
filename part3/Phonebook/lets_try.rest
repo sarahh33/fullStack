@@ -1,5 +1,11 @@
-POST http://localhost:3001/api/person/ Content-Type: application/json
+POST http://localhost:3001/api/persons/ 
+Content-Type: application/json
 
 {
-"name": "From vs code rest client", "number": "131"
+"name": "Sarah", "number": "9"
 }
+###
+get http://http://localhost:3001/api/persons/
+
+###
+DELETE http://localhost:3001/api/persons/60e6e96503c6a53260e5932d

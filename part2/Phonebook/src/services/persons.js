@@ -10,7 +10,7 @@ const update=newRecord=>{
 }
 
 const updateOld = (newRecord,id)=>{
-    console.log(id[0].id)
+    
     return axios.put(`${url}/${id[0].id}`, newRecord)
 }
 
