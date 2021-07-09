@@ -77,24 +77,23 @@ const App = () => {
       name: newName,
       number: newNum
     }
-    if (persons.some(person => person.name === newRecord.name)) {
-      
-      {if (window.confirm(newName + ' is already added to phonebook, replace the old number with a new one?')) 
-      {
+    if (persons.some(person => person.name === newRecord.name)){
+      if (window.confirm(newName + ' is already added to phonebook, replace the old number with a new one?')) {
+        
         personService
-        .updateOld(newRecord,personToShow.filter(n=> n.name===newRecord.name))
-        .then(response=>{setPersons(personToShow.map(person=> person.name!==newRecord.name?person:response.data))})
-        .catch(error=>{
-          setErrorMessage(`Person '${newName}' was alredy moved from the server`)
-          setPersons(personToShow.filter(person=> person.name!== newName))
-        })
+        .updateOld(personToShow.filter(n=> n.name===newRecord.name)[0].id,newRecord)
+        .then(response=>{setPersons(personToShow.map(person=> person.name!==newRecord.name
+          ?person
+          :response.data
+          ))})
+        
         setErrorMessage(`'${newName}' was updated`)
         setTimeout(()=>{
           setErrorMessage(null)
         },5000)
         
       }} 
-    }
+    
     else {
       personService
       .update(newRecord)
@@ -115,6 +114,7 @@ const App = () => {
   const deletRecordOf =(id)=>{
     
     const person = personToShow.find(n=> n.id===id)
+    console.log(id)
     
     personService
     .delet(id)

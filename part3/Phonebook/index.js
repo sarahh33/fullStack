@@ -74,23 +74,23 @@ app.post('/api/persons', (request, response) => {
 
 })
 
-app.put('api/persons/:id',(request,response,next)=>{
+app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-  const person= {
-    name:body.name,
-    number:body.number
+
+  const person = {
+    name: body.name,
+    number: body.number,
   }
 
-  Phone.findByIdAndUpdate(request.params.id, person,{new:true})
-  .then(updateOld=>{
-    request.json(updateOld)
-  })
-  .catch(error=>next(error))
+  Phone.findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
 })
 
-
 app.delete('/api/persons/:id', (request, response, next) => {
-  Person.findByIdAndRemove(request.params.id)
+  Phone.findByIdAndRemove(request.params.id)
     .then(result => {
       response.status(204).end()
     })
