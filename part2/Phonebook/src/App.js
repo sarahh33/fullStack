@@ -52,9 +52,6 @@ const PersonForm = ({ add, valueNum, valueName, handleName, handleNum }) => {
 
 }
 
-
-
-
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -62,6 +59,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [searchName, setSearch] = useState('')
   const [errorMessage, setErrorMessage]= useState('something wrong happens')
+  const [nameIsValid, setValid]= useState(true)
 
   useEffect(()=>{
     console.log('effect')
@@ -77,7 +75,14 @@ const App = () => {
       name: newName,
       number: newNum
     }
-    if (persons.some(person => person.name === newRecord.name)){
+
+    if (newRecord.name <4 || newRecord.number<9){
+      setErrorMessage('content length is not ok')
+      setTimeout(()=>{
+        setErrorMessage(null)
+      },5000)
+    }
+    else if (persons.some(person => person.name === newRecord.name)){
       if (window.confirm(newName + ' is already added to phonebook, replace the old number with a new one?')) {
         
         personService
@@ -94,10 +99,12 @@ const App = () => {
         
       }} 
     
+
     else {
       personService
       .update(newRecord)
       .then(response=>{setPersons(personToShow.concat(response.data))})
+      .catch(error => {console.log(error.response.data)})
       setErrorMessage(`'${newName}' was added`)
         setTimeout(()=>{
           setErrorMessage(null)
@@ -120,7 +127,8 @@ const App = () => {
     .delet(id)
     personService
     .getAll()
-    .then(response=> {setPersons(response.data)})
+    .then(response=> {setPersons(response.data)}) 
+    
 
   }
   

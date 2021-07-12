@@ -48,9 +48,8 @@ app.get('/api/persons/:id', (request, response,next) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :new'))
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response,next) => {
   const body = request.body
-  console.log(body)
   
   const person = new Phone({
     name: body.name,
@@ -62,16 +61,15 @@ app.post('/api/persons', (request, response) => {
   if (body.name === undefined) {
     return response.status(400).json({ error: 'content missing' })
   }
- 
-  else{    
+
   
-  person.save()
+  person
+  .save()
     .then(savedPerson => {
       response.json(savedPerson)
     })
     .catch(error => next(error))
-  }
-
+  
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -104,6 +102,8 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   }
+  if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })}
   next(error)
 }
 
