@@ -77,10 +77,15 @@ const App = () => {
     }
 
     if (newRecord.name <4 || newRecord.number<9){
-      setErrorMessage('content length is not ok')
-      setTimeout(()=>{
-        setErrorMessage(null)
-      },5000)
+      personService
+      .update(newRecord)
+      .then(response=>{setPersons(personToShow.concat(response.data))})
+      .catch(error => {setErrorMessage(error.response.data.error)
+        setTimeout(()=>{
+          setErrorMessage(null)
+        },5000)})
+      
+      
     }
     else if (persons.some(person => person.name === newRecord.name)){
       if (window.confirm(newName + ' is already added to phonebook, replace the old number with a new one?')) {
@@ -104,7 +109,7 @@ const App = () => {
       personService
       .update(newRecord)
       .then(response=>{setPersons(personToShow.concat(response.data))})
-      .catch(error => {console.log(error.response.data)})
+      
       setErrorMessage(`'${newName}' was added`)
         setTimeout(()=>{
           setErrorMessage(null)
