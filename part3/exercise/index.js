@@ -2,9 +2,20 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
-
-
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+const config = require('./utils/config')
 const Note = require('./models/note')
+
+logger.info(`Server running on port ${config.PORT}`)
+
+const server = http.createServer(app)
+server.listen =http(config.PORT, ()=> {
+logger.info(`Server runnin gon port ${config.PORT}`)
+})
+
+
+
 console.log(Note)
 
 
@@ -123,6 +134,6 @@ app.put('/api/notes/:id', (request, response, next) => {
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  logger.info(`Server running on port ${PORT}`)
 })
 
