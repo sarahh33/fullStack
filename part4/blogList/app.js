@@ -14,6 +14,6 @@ mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: t
 
 app.use(cors())
 app.use(express.json())
-app.use('/api/blogs', notesRouter)
+app.use('/api/blogs', notesRouter) // do not need to add '/api/blogs' part in POST or GET request 
 
 module.exports=app

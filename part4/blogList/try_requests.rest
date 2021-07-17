@@ -1,8 +1,8 @@
-POST http://localhost:3003/api/blogs/ HTTP/1.1
+POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "abc1",
+  "title": "abc1",
   "author": "String1",
   "url": "www.baidu.com",
   "likes": 132
