@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-  "title": "abc1",
-  "author": "String1",
+  "title": "abc33",
+  "author": "String3",
   "url": "www.baidu.com",
-  "likes": 132
+  "likes": 333
 }
 ###
 get http://localhost:3003/api/blogs/
