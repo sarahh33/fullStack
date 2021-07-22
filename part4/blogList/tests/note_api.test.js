@@ -1,38 +1,20 @@
 const mongoose = require('mongoose')
+const helper = require('./test_helper')
 const supertest = require('supertest')
 const app = require('../app')
 
 const api = supertest(app)
-
 const Blog = require('../models/blog')
-const initialBlogs = [
-    {
-        title: "abc",
-        author: "String",
-        url: "www.baidu.com",
-        likes: 132
-    },
-    {
-        title: "abc",
-        author: "String",
-        url: "www.baidu.com",
-        likes: 132
-    },
-    {
-        title: "abc33",
-        author: "String3",
-        url: "www.baidu.com",
-        likes: 333
-    }
 
-]
 beforeEach(async () => {
     await Blog.deleteMany({})
-    let blogObject = new Blog(initialBlogs[0])
+    let blogObject = new Blog(helper.initialBlogs[0])
     await blogObject.save()
-    blogObject = new Blog(initialBlogs[1])
+
+    blogObject = new Blog(helper.initialBlogs[1])
     await blogObject.save()
-    blogObject = new Blog(initialBlogs[2])
+    
+    blogObject = new Blog(helper.initialBlogs[2])
     await blogObject.save()
 })
 
@@ -70,8 +52,28 @@ test('a blog can be added', async () => {
 
     const newBlogs = response.body.map(r => r.title)
 
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
     expect(newBlogs).toContain('my test')
+
+})
+
+test('likes is missed', async () => {
+    
+    const newBlog = {
+        title: 'my new test',
+        author: "33-2",
+        url: "www.google.com",
+        
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(200)
+    
+    const blogAtEnd = await helper.blogsInDb()
+    const blogLikes = blogAtEnd.map(b => b.likes)
+    expect(blogLikes).toContain(0)
+   
 
 })
 
