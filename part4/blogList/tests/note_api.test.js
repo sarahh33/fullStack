@@ -72,9 +72,22 @@ test('likes is missed', async () => {
     
     const blogAtEnd = await helper.blogsInDb()
     const blogLikes = blogAtEnd.map(b => b.likes)
+    console.log(blogLikes)
     expect(blogLikes).toContain(0)
-   
+   })
 
+test('url and title are missing', async () => {
+    const newBlog = {
+       title:'11',
+        author: "33-2",
+        
+      
+    }
+    
+    await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
 })
 
 afterAll(() => {
