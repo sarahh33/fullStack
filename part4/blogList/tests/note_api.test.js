@@ -43,7 +43,7 @@ test('a blog can be added', async () => {
     await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(201)
+        .expect(200)
         .expect('Content-Type', /application\/json/)
     
 
@@ -72,7 +72,7 @@ test('likes is missed', async () => {
     
     const blogAtEnd = await helper.blogsInDb()
     const blogLikes = blogAtEnd.map(b => b.likes)
-    console.log(blogLikes)
+    
     expect(blogLikes).toContain(0)
    })
 
@@ -88,6 +88,46 @@ test('url and title are missing', async () => {
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
+})
+
+test('a blog can be deleted', async () => {
+    const  blogAtStart = await helper.blogsInDb()
+    const blogToDelete = blogAtStart[0]
+
+    await api 
+    .delete(`/api/blogs/${blogToDelete._id}`)
+    .expect(204)
+
+    const blogAtEnd = await helper.blogsInDb()
+
+    expect(blogAtEnd).toHaveLength(helper.initialBlogs.length -1)
+
+    const contents = blogAtEnd.map(r => r.title)
+
+    expect(contents).not.toContain(blogToDelete.title)
+})
+
+test('a blog can be updated', async () => {
+    const  blogAtStart = await helper.blogsInDb()
+    const blogToChange = blogAtStart[0]
+
+    const likes = blogAtStart.map(r => r.likes)
+    const newBlog = {
+        author: 'my new test',
+        likes:3333
+        
+    }
+
+    await api 
+    .put(`/api/blogs/${blogToChange._id}`)
+    .send(newBlog)
+    .expect(200)
+    
+
+    const blogAtEnd = await helper.blogsInDb()
+    
+    const changedLikes = blogAtEnd.map(r => r.likes)
+    expect(changedLikes[0]).not.toBe(likes[0])
 })
 
 afterAll(() => {

@@ -1,11 +1,10 @@
-POST http://localhost:3003/api/blogs/
+Put http://localhost:3003/api/blogs/60fac2a08f16f97730de66f1/
 Content-Type: application/json
 
-{
-  "title": "abc33",
-  "author": "String3",
-  "url": "www.baidu.com",
-  "likes": 333
-}
+{"author":"hug111",
+  "likes": 1}
 ###
 get http://localhost:3003/api/blogs/
+
+###
+DELETE http://localhost:3003/api/blogs/60fa8aab879315370cee6478/

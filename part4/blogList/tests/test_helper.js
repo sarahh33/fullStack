@@ -4,19 +4,22 @@ const initialBlogs = [
         title: "abc",
         author: "String",
         url: "www.baidu.com",
-        likes: 132
+        likes: 132,
+        id:1
     },
     {
-        title: "abc",
+        title: "abc2",
         author: "String",
         url: "www.baidu.com",
-        likes: 132
+        likes: 132,
+        id:2
     },
     {
         title: "abc33",
         author: "String3",
         url: "www.baidu.com",
-        likes: 333
+        likes: 333,
+        id:3
     }
 
 ]
