@@ -13,5 +13,8 @@ DELETE http://localhost:3003/api/blogs/60fa8aab879315370cee6478/
 POST http://localhost:3003/api/users
 Content-Type: application/json
 
-{"username": "hellas",
-"name": "Arto Hellas"}
+{
+  "username": "mluukkai",
+  "name": "Matti Luukkainen",
+  "password":"randomword"
+}

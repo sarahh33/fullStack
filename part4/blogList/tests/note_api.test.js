@@ -57,7 +57,7 @@ test('a blog can be added', async () => {
     expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
     expect(newBlogs).toContain('my test')
 
-})
+},200000)
 
 test('likes is missed', async () => {
     
@@ -76,7 +76,7 @@ test('likes is missed', async () => {
     const blogLikes = blogAtEnd.map(b => b.likes)
     
     expect(blogLikes).toContain(0)
-   })
+   },20000)
 
 test('url and title are missing', async () => {
     const newBlog = {
@@ -90,7 +90,7 @@ test('url and title are missing', async () => {
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
-})
+},20000)
 
 test('a blog can be deleted', async () => {
     const  blogAtStart = await helper.blogsInDb()
@@ -130,7 +130,7 @@ test('a blog can be updated', async () => {
     
     const changedLikes = blogAtEnd.map(r => r.likes)
     expect(changedLikes[0]).not.toBe(likes[0])
-})
+},10000)
 
 describe('when there is initially one user in db', () => {
     beforeEach(async () => {
@@ -183,7 +183,7 @@ describe('when there is initially one user in db', () => {
     
         const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd).toHaveLength(usersAtStart.length)
-      })
+      }, 10000)
   })
 
 
