@@ -15,13 +15,14 @@ const userSchema = new mongoose.Schema({
     minlength:3,
     
 },
-  notes: [
+  blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Note'
+      ref: 'Blog'
     }
   ],
 })
+
 userSchema.plugin(uniqueValidator)
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {

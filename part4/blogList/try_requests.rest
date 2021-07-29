@@ -1,8 +1,14 @@
-Put http://localhost:3003/api/blogs/60fac2a08f16f97730de66f1/
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
-{"author":"hug111",
-  "likes": 1}
+{
+  "title":"another try",
+  "author":"can't be me",
+  "url":"www.new.com",
+  "likes":3,
+  "userId":"6102583d00f8045c2c1a9ce2"
+}
+
 ###
 get http://localhost:3003/api/users
 
@@ -14,7 +20,7 @@ POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-  "username": "mluukkai",
-  "name": "Matti Luukkainen",
-  "password":"randomword"
+  "username": "mluukkai23",
+  "name": "Matti Luukkainen 23",
+  "password":"randomword23"
 }
