@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 
 {
   "title":"another try",
@@ -7,6 +8,28 @@ Content-Type: application/json
   "url":"www.new.com",
   "likes":3,
   "userId":"6102583d00f8045c2c1a9ce2"
+}
+
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title":"another try",
+  "author":"can't be me",
+  "url":"www.new.com",
+  "likes":3,
+  "userId":"6102583d00f8045c2c1a9ce2"
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "mluukkai23",
+  "password":"randomword23"
 }
 
 ###
