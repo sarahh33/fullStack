@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpMjMiLCJpZCI6IjYxMDI1ODNkMDBmODA0NWMyYzFhOWNlMiIsImlhdCI6MTYyNzU1MjI0NH0.p0i1fXQsO6i1Rv0V2ez4Nf3Is7nu7cCeArbdoeOjd1Y
 
 {
   "title":"another try",
