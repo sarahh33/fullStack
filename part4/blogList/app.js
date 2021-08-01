@@ -23,7 +23,11 @@ mongoose.connect(config.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: t
 app.use(cors())
 app.use(express.json())
 app.use(middleware.tokenExtractor)
-app.use('/api/blogs', notesRouter) // do not need to add '/api/blogs' part in POST or GET request 
+
+
+//// use the middleware only in /api/blogs routes
+app.use('/api/blogs', middleware.userExtractor,notesRouter) 
+// do not need to add '/api/blogs' part in POST or GET request 
 app.use('/api/users', usersRouter) // never forgot the firt '/'
 app.use('/api/login', loginRouter)
 
