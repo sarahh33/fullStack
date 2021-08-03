@@ -1,20 +1,32 @@
-post http://localhost:3001/api/login
+post http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "mluukkai",
-    "password":"salainen"
+    "username": "sarah",
+    "password":"hss"
 }
 
 ###
 post http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhcmFoIiwiaWQiOiI2MTA3YjI0ODVmZDg2YjQ1ZDQzZmIyZjEiLCJpYXQiOjE2Mjc4OTQ3MjcsImV4cCI6MTYyNzg5ODMyN30.IsihTB1j3-ZmhuLqg4JBI3MSV-VZL37gsKY8RlspJZk
 
 {
     "content": "HTML is easy",
     "important": false,
     "_id": 221212,
     "user": 123456,
+    "userId": "6107b2485fd86b45d43fb2f1"
 }
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "sarah",
+    "password":"hss"
+}
+
 ###
 GET http://localhost:3001/api/notes

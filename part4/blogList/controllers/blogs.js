@@ -2,6 +2,7 @@ const notesRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+const middleware = require('../utils/middleware')
 
 notesRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -10,7 +11,7 @@ notesRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-notesRouter.post('/', async (request, response) => {
+notesRouter.post('/', middleware.userExtractor,async (request, response) => {
   const body = request.body
   const user = request.user
 

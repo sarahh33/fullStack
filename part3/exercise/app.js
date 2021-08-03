@@ -9,7 +9,7 @@ const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const loginRouter = require('./controllers/login')
 const logger = require('./utils/logger')
-const middleware = require('./utils/middleware')
+
 
 logger.info('connecting to', config.MONGODB_URI)
 
