@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+
 
 const Notification = ({ message }) => {
   if (message === null) {
@@ -126,29 +129,6 @@ const App = () => {
 
   }
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>title: <input
-        type='text'
-        value={newTitle}
-        name='Title'
-        onChange={({ target }) => setNewTitle(target.value)}
-      /></div>
-      <div>author: <input
-        type='text'
-        value={newAuthor}
-        name='Author'
-        onChange={({ target }) => setNewAu(target.value)}
-      /></div>
-      <div>url: <input
-        type='url'
-        value={newUrl}
-        name="Url"
-        onChange={({ target }) => setNewUrl(target.value)}
-      /></div>
-      <button type="submit">save</button>
-    </form>
-  )
 
 
   if (user === null) {
@@ -156,7 +136,7 @@ const App = () => {
       <div>
         <h2>Log in to application</h2>
         <Notification message={errorMessage} />
-        <Success  message={successMessage}/>
+        <Success message={successMessage} />
         {loginForm()}
       </div>
     )
@@ -166,14 +146,26 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={errorMessage} />
-      <Success  message={successMessage} />
-      <b>{user.name} logged in</b>
+      <Success message={successMessage} />
+      <b>{user.name} logged in </b>
       <button onClick={clearToken}>logout</button>
-      <h2>create new blog</h2>
-      {blogForm()}
+
+      <Togglable buttonLabel='create new blog'>
+        <BlogForm
+          title={newTitle}
+          author={newAuthor}
+          url={newUrl}
+          addBlog={addBlog}
+          handleTitle={({ target }) => setNewTitle(target.value)}
+          handleAu={({ target }) => setNewAu(target.value)}
+          handleUrl={({ target }) => setNewUrl(target.value)}
+        />
+      </Togglable>
       <b>{blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}</b>
+      
+
     </div>
   )
 }
