@@ -39,8 +39,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
-
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -55,7 +53,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -125,7 +122,38 @@ const App = () => {
         setNewAu('')
         setNewUrl('')
       })
+  }
 
+  const addLikes = async (blog) => {
+
+    try {
+      const updatedBlog = {
+        title: blog.title,
+        id: blog._id,
+        author: blog.author,
+        likes: blog.likes + 1,
+        url: blog.url
+      }
+      blogService
+        .putLikes(updatedBlog)
+      setBlogs(blogs.map(blog => blog._id !== updatedBlog.id ? blog : updatedBlog))
+    } catch (exception) {
+
+      setErrorMessage('something wrong')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+
+  }
+
+  const sortBlogs = () => {
+    const blogsAfterSort = blogs.sort((a, b) => a.likes - b.likes)
+
+
+    blogService
+    .getAll()
+    setBlogs(blogsAfterSort)
 
   }
 
@@ -161,10 +189,11 @@ const App = () => {
           handleUrl={({ target }) => setNewUrl(target.value)}
         />
       </Togglable>
+      <h2>Blogs</h2><button onClick={sortBlogs}>sort</button>
       <b>{blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} />
       )}</b>
-      
+
 
     </div>
   )

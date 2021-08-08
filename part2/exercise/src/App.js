@@ -35,7 +35,6 @@ const Footer = () => {
 
 const App = () => {
   const [notes, setNotes] = useState([])
-
   const [showAll, setShowAll] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')

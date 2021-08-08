@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog,addLikes }) => {
   const [detailVisible, setDetailVisible] = useState(false)
 
   
-  const showWhenVisible = { display: detailVisible ? '' : 'none' }
-  console.log(showWhenVisible)
+  const showWhenVisible = { display: detailVisible ? '' : 'none' 
+}
+  
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,11 +16,10 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+
   const toggleVisibility = () => {
     setDetailVisible(!detailVisible)
   }
-
-
 
     return (
       <div style={blogStyle}>
@@ -27,9 +28,8 @@ const Blog = ({ blog }) => {
         <div style={showWhenVisible}>
           <p>
             likes: {blog.likes}
-          <button>like</button>
           </p> 
-          
+           <button onClick={addLikes}>like</button>
           <p>url: {blog.url}</p>
         <button onClick={toggleVisibility}>hide</button></div>
       </div>
