@@ -147,17 +147,26 @@ const App = () => {
 
   }
 
-  const sortBlogs = () => {
-    const blogsAfterSort = blogs.sort((a, b) => a.likes - b.likes)
+  const deleteBlog =  async (blog) =>{
+try{if (window.confirm(`Remove ${blog.title} by ${blog.author}`)){
 
-
-    blogService
-    .getAll()
-    setBlogs(blogsAfterSort)
+      blogService
+    .remove(blog)   
+      setBlogs(blogs.filter(every=> every._id!== blog._id))
+      setSuccessMessage(`log ${blog.title} is deleted`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      },5000)    
+    }}
+    catch(excetion){
+      setErrorMessage(`Youe do not have the permission to delete ${blog.title}`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    },5000)
+    }
+    
 
   }
-
-
 
   if (user === null) {
     return (
@@ -187,11 +196,12 @@ const App = () => {
           handleTitle={({ target }) => setNewTitle(target.value)}
           handleAu={({ target }) => setNewAu(target.value)}
           handleUrl={({ target }) => setNewUrl(target.value)}
+
         />
       </Togglable>
-      <h2>Blogs</h2><button onClick={sortBlogs}>sort</button>
-      <b>{blogs.map(blog =>
-        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} />
+      <h2>Blogs</h2>
+      <b>{blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} deleteBlog={()=>deleteBlog(blog)} />
       )}</b>
 
 

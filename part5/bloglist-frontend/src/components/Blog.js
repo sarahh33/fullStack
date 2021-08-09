@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog,addLikes }) => {
+const Blog = ({ blog,addLikes,deleteBlog }) => {
   const [detailVisible, setDetailVisible] = useState(false)
 
-  
   const showWhenVisible = { display: detailVisible ? '' : 'none' 
 }
   
@@ -32,6 +31,7 @@ const Blog = ({ blog,addLikes }) => {
            <button onClick={addLikes}>like</button>
           <p>url: {blog.url}</p>
         <button onClick={toggleVisibility}>hide</button></div>
+        <button onClick = {deleteBlog}>remove</button>
       </div>
     )
 }
