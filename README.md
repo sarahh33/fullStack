@@ -1,2 +1,2 @@
 # fullStack
-coursework
+A self-study course
