@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -147,24 +147,25 @@ const App = () => {
 
   }
 
-  const deleteBlog =  async (blog) =>{
-try{if (window.confirm(`Remove ${blog.title} by ${blog.author}`)){
+  const deleteBlog = async (blog) => {
+    try {
+      if (window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
 
-      blogService
-    .remove(blog)   
-      setBlogs(blogs.filter(every=> every._id!== blog._id))
-      setSuccessMessage(`log ${blog.title} is deleted`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      },5000)    
-    }}
-    catch(excetion){
-      setErrorMessage(`Youe do not have the permission to delete ${blog.title}`)
-    setTimeout(() => {
-      setErrorMessage(null)
-    },5000)
+        blogService
+          .remove(blog)
+        setBlogs(blogs.filter(every => every._id !== blog._id))
+        setSuccessMessage(`log ${blog.title} is deleted`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
+      }
     }
-    
+    catch (excetion) {
+      setErrorMessage(`Youe do not have the permission to delete ${blog.title}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
 
   }
 
@@ -201,7 +202,7 @@ try{if (window.confirm(`Remove ${blog.title} by ${blog.author}`)){
       </Togglable>
       <h2>Blogs</h2>
       <b>{blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} deleteBlog={()=>deleteBlog(blog)} />
+        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} deleteBlog={() => deleteBlog(blog)} />
       )}</b>
 
 

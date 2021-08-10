@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 const LoginForm = ({
   handleLogin,
   handleUserChange,
-  handlePassChange, 
-  username, 
+  handlePassChange,
+  username,
   password
 }) => (
-  
+
   <form onSubmit={handleLogin}>
     <div>
       username

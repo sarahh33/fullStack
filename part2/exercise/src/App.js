@@ -3,7 +3,7 @@ import Note from './components/Note'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
-import noteService from "./services/notes"
+import noteService from './services/notes'
 import loginService from './services/login'
 
 
@@ -131,7 +131,7 @@ const App = () => {
       /></Togglable>
   )
   const noteForm = () => (
-    <Togglable buttonLabel='new note' ref= {noteFormRef}>
+    <Togglable buttonLabel='new note' ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Togglable>)
 
