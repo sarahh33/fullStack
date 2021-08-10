@@ -19,8 +19,11 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      title: {blog.title}
+    <div style={blogStyle} >
+      <div className ='defaultDisplay'>
+        <p>title: {blog.title}</p>
+        <p>author:{blog.author}</p>
+      </div>
       <button onClick={toggleVisibility}>show</button>
       <div style={showWhenVisible}>
         <p>
