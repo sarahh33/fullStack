@@ -30,9 +30,6 @@ const Success = ({ message }) => {
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAu] = useState('')
-  const [newUrl, setNewUrl] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -105,22 +102,11 @@ const App = () => {
     </form>
   )
 
-  const addBlog = (event) => {
-    event.preventDefault()
-
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
-    }
+  const addBlog = (newObejct) => {
     blogService
-      .create(blogObject)
+      .create(newObejct)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setSuccessMessage(`a new blog ${newTitle} by ${newAuthor} added`)
-        setNewTitle('')
-        setNewAu('')
-        setNewUrl('')
       })
   }
 
@@ -189,16 +175,7 @@ const App = () => {
       <button onClick={clearToken}>logout</button>
 
       <Togglable buttonLabel='create new blog'>
-        <BlogForm
-          title={newTitle}
-          author={newAuthor}
-          url={newUrl}
-          addBlog={addBlog}
-          handleTitle={({ target }) => setNewTitle(target.value)}
-          handleAu={({ target }) => setNewAu(target.value)}
-          handleUrl={({ target }) => setNewUrl(target.value)}
-
-        />
+        <BlogForm createBlog={addBlog} />
       </Togglable>
       <h2>Blogs</h2>
       <b>{blogs.sort((a, b) => b.likes - a.likes).map(blog =>

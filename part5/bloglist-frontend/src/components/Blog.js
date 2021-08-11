@@ -23,15 +23,15 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
       <div className ='defaultDisplay'>
         <p>title: {blog.title}</p>
         <p>author:{blog.author}</p>
+        <button onClick={toggleVisibility} className='show'>show</button>
       </div>
-      <button onClick={toggleVisibility}>show</button>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='clickToShow'>
         <p>
           likes: {blog.likes}
         </p>
-        <button onClick={addLikes}>like</button>
+        <button onClick={addLikes} className='like'>like</button>
         <p>url: {blog.url}</p>
-        <button onClick={toggleVisibility}>hide</button></div>
+        <button onClick={toggleVisibility} className='close'>hide</button></div>
       <button onClick={deleteBlog}>remove</button>
     </div>
   )
