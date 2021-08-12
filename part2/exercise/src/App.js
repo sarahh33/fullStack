@@ -58,21 +58,20 @@ const App = () => {
 
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
+    const changedNote = { ...note, important: !note.important    }
 
     noteService
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
-      .catch(error => {
+      .catch(() => {
         setErrorMessage(
           `Note '${note.content}' was already removed from server`
         )
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-        setNotes(notes.filter(n => n.id !== id))
       })
   }
 
@@ -121,7 +120,7 @@ const App = () => {
       })
   }
   const loginForm = () => (
-    <Togglable buttonLabel='login'>
+    <Togglable buttonLabel='log in'>
       <LoginForm
         username={username}
         password={password}
@@ -131,7 +130,7 @@ const App = () => {
       /></Togglable>
   )
   const noteForm = () => (
-    <Togglable buttonLabel='new note' ref={noteFormRef}>
+    <Togglable buttonLabel='add note' ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Togglable>)
 
@@ -150,8 +149,11 @@ const App = () => {
         </div>
       }
 
-      <div><button onClick={() => setShowAll(!showAll)}>
-        show {showAll ? 'important' : 'all'}</button></div>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all' }
+        </button>
+      </div>
       <ul>
         {noteToShow.map(note =>
           <Note
