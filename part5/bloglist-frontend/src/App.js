@@ -84,6 +84,7 @@ const App = () => {
         username
         <input
           type="text"
+          id = 'username'
           value={username}
           name="Username"
           onChange={({ target }) => setUsername(target.value)}
@@ -93,12 +94,13 @@ const App = () => {
         password
         <input
           type="password"
+          id = "password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit" id='login'>login</button>
     </form>
   )
 
@@ -140,7 +142,7 @@ const App = () => {
         blogService
           .remove(blog)
         setBlogs(blogs.filter(every => every._id !== blog._id))
-        setSuccessMessage(`log ${blog.title} is deleted`)
+        setSuccessMessage(`Blog ${blog.title} is deleted`)
         setTimeout(() => {
           setSuccessMessage(null)
         }, 5000)
