@@ -19,14 +19,14 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle} >
+    <div style={blogStyle} datacy = {'blogList'}>
       <div className ='defaultDisplay'>
         <p>title: {blog.title}</p>
         <p>author:{blog.author}</p>
         <button onClick={toggleVisibility} className='show'>show</button>
       </div>
       <div style={showWhenVisible} className='clickToShow'>
-        <p>
+        <p className='likes'>
           likes: {blog.likes}
         </p>
         <button onClick={addLikes} className='like'>like</button>

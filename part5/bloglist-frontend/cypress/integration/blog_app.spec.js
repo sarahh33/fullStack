@@ -52,7 +52,12 @@ describe('Blog app', function() {
       cy.contains('show').click()
       cy.contains('like').click()
       cy.contains('show').click()
-      cy.contains('33')})
+      cy.contains('33')
+
+      
+    })
+
+      
 //5.20
     describe('when a blog is existed', function(){
       beforeEach(function(){
@@ -78,10 +83,34 @@ describe('Blog app', function() {
         cy.login({ username: 'sarah', password: 'hss' })
           .contains('remove').click()
         cy.contains('test for deleting')
+        cy.get('html').should('not.contain', 'test for deleting is deleted')
 
       })
+//5.22
+      it('list is in a sequence', function() {
+        const likeList = []
+
+        cy.createBlog({
+          title:'test for sequence',
+          author:'mluukkai',
+          url:'http://www.muuu/com',
+          likes:200
+        })
+        cy.createBlog({
+          title:'test for sequence 2',
+          author:'mluukkai',
+          url:'http://www.muuu/com',
+          likes:2000
+        })
+
+        cy.get('[datacy=blogList]').then(($blogs) => {
+          $blogs.map((i, el) => {el.querySelector('.show').click()
+            likeList.push(el.querySelector('.likes').textContent.split(' ')[1])
+          })
+          const sortedLikes = likeList.concat().sort((a, b) => b - a)
+          expect(likeList).deep.to.equal(sortedLikes)
+
+        })})
     })
   })
-
 })
-

@@ -137,16 +137,17 @@ const App = () => {
 
   const deleteBlog = async (blog) => {
     try {
-      if (window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
+      if (blog.user.username===user.username && window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
 
         blogService
-          .remove(blog)
-        setBlogs(blogs.filter(every => every._id !== blog._id))
-        setSuccessMessage(`Blog ${blog.title} is deleted`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-      }
+          .remove(blog)}
+      else{return}
+      setBlogs(blogs.filter(every => every._id !== blog._id))
+      setSuccessMessage(`Blog ${blog.title} is deleted`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+
     }
     catch (excetion) {
       setErrorMessage(`Youe do not have the permission to delete ${blog.title}`)
