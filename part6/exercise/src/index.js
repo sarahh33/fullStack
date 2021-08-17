@@ -1,13 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import './index.css'
+import App from './App'
+import noteReducer from './reducers/noteReducer'
+//counter part
+// const counterReducer = (state = 0, action) => {
+//   switch (action.type) {
+//     case 'INCREMENT':
+//       return state + 1
+//     case 'DECREMENT':
+//       return state - 1
+//     case 'ZERO':
+//       return 0
+//     default:
+//       return state
+//   }
+// }
+// const store = createStore(counterReducer)
+const store = createStore(noteReducer)
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
