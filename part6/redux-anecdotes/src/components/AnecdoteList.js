@@ -1,10 +1,11 @@
 import React from 'react'
 import { voting } from '../reducers/anecdoteReducer' //must have {}
 import { useDispatch,useSelector } from 'react-redux'
-import { notiChange, backToInitial, notiBack } from '../reducers/notificationReducer'
+import { notiChange, notiBack } from '../reducers/notificationReducer'
 
 const Anecdote = (props) => {
-    const anecdotes = useSelector(state => state.anec)
+    const anecdotes = useSelector(state => state.anec.filter(e=> e.content.includes(state.filter)))
+    
     console.log( `anecdote ${anecdotes}`)
     const dispatch = useDispatch()
 

@@ -7,6 +7,7 @@ const NewAnecdote = (props) => {
 
     const addNewAnecdote = (event) => {
         event.preventDefault()
+        console.log(event)
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
         dispatch(createAnecdote(content))
