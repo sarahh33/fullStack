@@ -1,7 +1,7 @@
 import React from 'react'
 import { voting } from '../reducers/anecdoteReducer' //must have {}
 import { useDispatch,useSelector } from 'react-redux'
-import { notiChange, backToInitial } from '../reducers/notificationReducer'
+import { notiChange, backToInitial, notiBack } from '../reducers/notificationReducer'
 
 const Anecdote = (props) => {
     const anecdotes = useSelector(state => state.anec)
@@ -12,7 +12,7 @@ const Anecdote = (props) => {
         console.log('vote', anecdote.id)
         dispatch(voting(anecdote.id))
         dispatch(notiChange(anecdote.content))
-        
+        setTimeout(() => {(dispatch(notiBack()))}, 5000);                
     }
 return(
     <div>
