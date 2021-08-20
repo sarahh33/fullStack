@@ -1,3 +1,4 @@
+import anecdoteService from '../services/anecdotes'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -36,7 +37,7 @@ const anecReducer = (state = [], action) => {
       return state.map(anecdote => anecdote.id !== id ? anecdote : changedAnecdote)
     case 'INIT_ANEC':
       return action.data
-      
+
   }
 
   return state
@@ -57,10 +58,13 @@ export const createAnecdote = (data) => {
   })
 }
 
-export const initialAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANEC',
-    data: anecdotes
+export const initialAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANEC',
+      data: anecdotes
+    })
   }
 }
 export default anecReducer
