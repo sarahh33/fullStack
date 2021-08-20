@@ -4,7 +4,10 @@ import { useDispatch,useSelector } from 'react-redux'
 import { notiChange, notiBack } from '../reducers/notificationReducer'
 
 const Anecdote = (props) => {
-    const anecdotes = useSelector(state => state.anec.filter(e=> e.content.includes(state.filter)))
+  
+    const anecdotes = useSelector((state) => {
+      return state.anec.filter((anec => anec.content.includes(state.filter)))
+    })
     
     console.log( `anecdote ${anecdotes}`)
     const dispatch = useDispatch()

@@ -6,10 +6,11 @@ import { Provider } from 'react-redux'
 import './index.css'
 import App from './App'
 
-import noteReducer from './reducers/noteReducer'
+import noteReducer, {initializeNotes } from './reducers/noteReducer'
 import filterReducer from './reducers/filterReducer'
 import { createNote } from './reducers/noteReducer'
 import { filterChange } from './reducers/filterReducer'
+import noteService  from './services/notes'
 
 //counter part
 // const counterReducer = (state = 0, action) => {
@@ -33,9 +34,15 @@ const reducer = combineReducers({
 
 const store = createStore(
   reducer,
-  composeWithDevTools()
+   composeWithDevTools()
   )
 console.log(store.getState())
+
+noteService.getAll().then(notes =>
+  notes.forEach(note => {
+    store.dispatch({ type: 'NEW_NOTE', data: note })
+  })
+)
 
 ReactDOM.render(
   <Provider store={store}>
