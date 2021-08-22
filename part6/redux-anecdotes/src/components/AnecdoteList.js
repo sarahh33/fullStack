@@ -9,7 +9,6 @@ const Anecdote = (props) => {
       return state.anec.filter((anec => anec.content.includes(state.filter)))
     })
     
-    console.log( `anecdote ${anecdotes}`)
     const dispatch = useDispatch()
 
     const vote = (anecdote) => {

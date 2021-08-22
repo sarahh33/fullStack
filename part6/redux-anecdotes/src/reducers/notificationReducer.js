@@ -4,8 +4,6 @@ const initialState = 'Nothing happens yet'
 const notiReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTING_NOTI':
-      console.log('123')
-      console.log(action.content)
       return `You voted '${action.data.content}' `
     case 'INITIAL':
       return initialState
@@ -15,12 +13,16 @@ const notiReducer = (state = initialState, action) => {
 }
 
 let time
-export const notiChange = (content, time) => {
+export const notiChange = (content, delay) => {
   return async dispatch => {
     clearTimeout(time)
-    dispatch({type: 'VOTING_NOTI',
-    data: {content}  })
-    time = setTimeout(() => {(dispatch(notiBack()))}, 5000);
+
+    dispatch({
+      type: 'VOTING_NOTI',
+      data: { content }
+    })
+    time = setTimeout(() => { (dispatch(notiBack())) }, delay*1000);
+    
   }
 }
 
