@@ -4,37 +4,16 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
-
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-  return (
-    <div className='error'>
-      {message}
-    </div>
-  )
-}
-
-const Success = ({ message }) => {
-  if (message === null) {
-    return null
-  }
-  return (
-    <div className='success'>
-      {message}
-    </div>
-  )
-}
+import { setNotification } from './reducers/notificationReducer'
+import Notification from './components/Notification'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -65,11 +44,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification(`${user.username} logged in`, 'success'))
+    } catch (error) {
+      dispatch(setNotification('wrong credentials', 'error'))
     }
   }
 
@@ -84,7 +61,7 @@ const App = () => {
         username
         <input
           type="text"
-          id = 'username'
+          id='username'
           value={username}
           name="Username"
           onChange={({ target }) => setUsername(target.value)}
@@ -94,7 +71,7 @@ const App = () => {
         password
         <input
           type="password"
-          id = "password"
+          id="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
@@ -104,12 +81,13 @@ const App = () => {
     </form>
   )
 
-  const addBlog = (newObejct) => {
-    blogService
-      .create(newObejct)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-      })
+  const addBlog = async (newObejct) => {
+    try {
+      const newBlog = await blogService
+        .create(newObejct)
+      setBlogs(blogs.concat(newBlog))
+      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added!`, 'success'))
+    } catch (error) { dispatch(setNotification('failed to add', 'error')) }
   }
 
   const addLikes = async (blog) => {
@@ -126,34 +104,27 @@ const App = () => {
         .putLikes(updatedBlog)
       setBlogs(blogs.map(blog => blog._id !== updatedBlog.id ? blog : updatedBlog))
     } catch (exception) {
-
-      setErrorMessage('something wrong')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('something wrong', 'error'))
     }
 
   }
 
   const deleteBlog = async (blog) => {
     try {
-      if (blog.user.username===user.username && window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
+      if (blog.user.username === user.username && window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
 
         blogService
-          .remove(blog)}
-      else{return}
-      setBlogs(blogs.filter(every => every._id !== blog._id))
-      setSuccessMessage(`Blog ${blog.title} is deleted`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
+          .remove(blog)
+      }
+      else { return }
 
+      setBlogs(blogs.filter(every => every._id !== blog._id))
+
+      dispatch(setNotification(`Blog ${blog.title} is deleted`, 'success'))
     }
     catch (excetion) {
-      setErrorMessage(`Youe do not have the permission to delete ${blog.title}`)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification(`Youe do not have the permission to delete ${blog.title}`, 'error'))
+
     }
 
   }
@@ -162,8 +133,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-        <Notification message={errorMessage} />
-        <Success message={successMessage} />
+        <Notification />
         {loginForm()}
       </div>
     )
@@ -172,8 +142,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={errorMessage} />
-      <Success message={successMessage} />
+      <Notification />
       <b>{user.name} logged in </b>
       <button onClick={clearToken}>logout</button>
 
