@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, addLikes, deleteBlog }) => {
+
+const Blog = ({ blog, addLikes, username, deleteBlog }) => {
+  if (!blog) {
+    return null
+  }
+
+  console.log(username)
   const [detailVisible, setDetailVisible] = useState(false)
-
   const showWhenVisible = { display: detailVisible ? '' : 'none' }
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,7 +16,6 @@ const Blog = ({ blog, addLikes, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-
 
   const toggleVisibility = () => {
     setDetailVisible(!detailVisible)

@@ -6,5 +6,5 @@ const mongoUrl = process.env.NODE_ENV ==='test'
 : process.env.MONGODB_URI
 
 module.exports = {
-PORT,mongoUrl
+mongoUrl,PORT
 }

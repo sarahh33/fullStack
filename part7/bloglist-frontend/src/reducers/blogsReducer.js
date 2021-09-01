@@ -8,6 +8,7 @@ const blogsReducer = (state = initialState, action) => {
   case 'ADD':
     return state.concat(action.data)
   case 'DELETE':
+    console.log(`me me ${action.data}`)
     return state.filter((note => note._id !== action.data))
   case 'LIKE': {
     return state.map((note) => note.id !== action.data ? note : { ...note, likes: note.likes + 1 })
@@ -42,6 +43,7 @@ export const toDeleteBlog= (blog) => {
       type: 'DELETE',
       data: blog._id
     })
+    console.log('999')
   }
 }
 

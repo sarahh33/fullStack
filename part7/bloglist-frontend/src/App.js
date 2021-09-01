@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {  Route } from 'react-router-dom'
+import { Route, useRouteMatch, Link, Switch } from 'react-router-dom'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import User from './components/User'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 import UserList from './components/UserList'
 
 import { setNotification } from './reducers/notificationReducer'
-import { setBlogs  } from './reducers/blogsReducer'
-import { userLogged, userLogin,userLogout } from './reducers/userReducer'
-import { likeBlog, toDeleteBlog  } from './reducers/blogsReducer'
+
+import { setBlogs } from './reducers/blogsReducer'
+import { userLogged, userLogin, userLogout } from './reducers/userReducer'
+import { likeBlog, toDeleteBlog } from './reducers/blogsReducer'
 import { userListDisplay } from './reducers/userListReducer'
+
+const Menu = ({ user, token }) => {
+  const style = { padding: 5, margin: 5 }
+  return (
+    <div style={{ background: 'yellow', padding: 5 }}>
+      <Link to='/' style={style}>Blogs</Link>
+      <Link to='/users' style={style}>Users</Link>
+      <b>{user.name} logged in </b>
+      <button onClick={token}>logout</button>
+    </div>
+  )
+}
 
 const App = () => {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [ blogs, { user } ] = useSelector((state) => [state.blogs, state.user])
-  console.log(user)
+  const [blogs, { user }, userList] = useSelector((state) => [state.blogs, state.user, state.userList])
 
   useEffect(() => {
     dispatch(userListDisplay())
@@ -40,11 +53,13 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async(event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     try {
       console.log(password)
       await dispatch(userLogin({ username, password }))
+      setUsername('')
+      setPassword('')
       dispatch(setNotification(`${username} logged in`, 'success'))
     } catch (error) {
       dispatch(setNotification('wrong credentials', 'error'))
@@ -102,19 +117,29 @@ const App = () => {
 
   const deleteBlog = async (blog) => {
     try {
-      if (window.confirm(`Remove ${blog.title} by ${blog.author}`))
-      {
+      if (window.confirm(`Remove ${blog.title} by ${blog.author}`)) {
         dispatch(toDeleteBlog(blog))
         dispatch(setNotification(`Blog ${blog.title} is deleted`, 'success'))
-      }}
-    catch (excetion) {
-      dispatch(setNotification(`Youe do not have the permission to delete ${blog.title}`, 'error'))
+      }
+    }
+    catch (error) {
+      dispatch(setNotification(`You do not have the permission to delete ${blog.title}`, 'error'))
 
     }
 
   }
 
-  if (!user) {
+  const userMatched = useRouteMatch('/users/:id')
+  const userObject = userMatched
+    ? userList.find(user => user.id === userMatched.params.id)
+    : null
+  const blogMatched = useRouteMatch('/blogs/:id')
+  const blogObject = blogMatched
+    ? blogs.find(blog => blog._id.toString() === blogMatched.params.id.toString())
+    : null
+  console.log(blogObject)
+
+  if (!user || user === undefined) {
     return (
       <div>
         <h2>Log in to application</h2>
@@ -126,23 +151,29 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <Menu user={user} token={clearToken} />
       <Notification />
-      <b>{user.name} logged in </b>
-      <button onClick={clearToken}>logout</button>
-      <Route path="/users">
-        <UserList />
-      </Route>
+      <Switch>
+        <Route path='/blogs/:id'>
+          <Blog blog={blogObject} addLikes={() => addLikes(blogObject)} username={user.username} deleteBlog={() => deleteBlog(blogObject)} />
+        </Route>
+        <Route path='/users/:id'>
+          <User user={userObject} />
+        </Route>
+        <Route path='/users'>
+          <UserList />
+        </Route>
+        <Route path='/'>
+          <Togglable buttonLabel='create new blog'>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
 
-      <Togglable buttonLabel='create new blog'>
-        <BlogForm createBlog={addBlog} />
-      </Togglable>
-      <h2>Blogs</h2>
-      <b>{blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog._id} blog={blog} addLikes={() => addLikes(blog)} deleteBlog={() => deleteBlog(blog)} />
-      )}</b>
-
-
+          <h2>Blogs</h2>
+          <b>{blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+            <div style={{ border: 'solid', padding: 5, margin: 5 }} key={blog._id} ><Link to={`/blogs/${blog._id}`}>{blog.title}</Link></div>
+          )}</b>
+        </Route>
+      </Switch>
     </div>
   )
 }

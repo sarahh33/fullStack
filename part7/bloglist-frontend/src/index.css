@@ -17,3 +17,9 @@
     padding: 10px;
     margin-bottom: 10px;
   }
+
+   #homeBlog{
+    padding: 10;
+		border-style: "solid";
+		margin-bottom: 3,
+  }

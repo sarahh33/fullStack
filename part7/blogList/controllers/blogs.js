@@ -3,6 +3,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const middleware = require('../utils/middleware')
+const { compareSync } = require('bcrypt')
 
 notesRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -31,28 +32,28 @@ notesRouter.post('/', middleware.userExtractor,async (request, response) => {
   response.json(savedBlog)
 })
 
-notesRouter.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+
+notesRouter.delete('/:id',middleware.userExtractor,async (request, response) => {
+  
+  const blogID = request.params.id
+  const blog= await Blog.findById(blogID)
+  console.log(`here ${blog.user}, user `)
+  if (blog.user.toString() !== request.user._id.toString()) {
+    console.log()
+    return response.status(401).json({ error: 'only the creator can delete blogs' }).end()
   }
-
-  const user = await User.findById(decodedToken.id)
-  const blog = await Blog.findById(request.params.id)
-  if (blog.user.toString() !== user.id.toString()) {
-    return response.status(401).json({ error: 'only the creator can delete blogs' })
-  }
-
+  const user = await User.findById(request.user._id)
   await blog.remove()
   user.blogs = user.blogs.filter(b => b.id.toString() !== request.params.id.toString())
+  console.log(user.blogs)
   await user.save()
+  console.log(user)
   response.status(204).end()
 })
 
 notesRouter.put('/:id', async (request, response, next) => {
   const body = request.body
-  console.log(body)
 
   const blog = {
     author: body.author,

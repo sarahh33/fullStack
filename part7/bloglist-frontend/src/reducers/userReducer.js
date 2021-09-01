@@ -6,8 +6,8 @@ const userReducer =(state = {}, action) => {
   case 'LOGIN':
   case 'AFTERLOG':
     console.log('starting point')
-    console.log(action.data.user)
-    return  { user: action.data.user }
+    console.log(action.data)
+    return  action.data
   case 'LOGOUT':
     return {}
   default:

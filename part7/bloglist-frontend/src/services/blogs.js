@@ -25,11 +25,11 @@ const putLikes = async updatedBlog => {
   await axios.put(`${baseUrl}/${updatedBlog._id}`, updatedBlog, config).data
 }
 
-const removeBlog = async blog => {
-
+const removeBlog = async (blog) => {
   console.log(`${baseUrl}/${blog._id}`)
-  const response =  axios.delete(`${baseUrl}/${blog._id}`,config )
-  return response.data
+  await axios.delete(`${baseUrl}/${blog._id}`, config)
+
+
 }
 
 export default { getAll, create, setToken, putLikes, removeBlog }
