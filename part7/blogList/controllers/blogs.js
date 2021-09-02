@@ -1,6 +1,7 @@
 const notesRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
 const jwt = require('jsonwebtoken')
 const middleware = require('../utils/middleware')
 const { compareSync } = require('bcrypt')
@@ -60,10 +61,21 @@ notesRouter.put('/:id', async (request, response, next) => {
     likes: body.likes
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id, blog, { new: true })
   response.json(updatedBlog)
   console.log(updatedBlog)
 })
 
+notesRouter.post('/:id/comments', async (request, response) => {
+  console.log(request.body.comment)
+  const data = await Blog.findByIdAndUpdate(
+    request.params.id,
+    {$push:{ comments: request.body.comment }}, // update operator $push
+    { new: true },
+  );
+  console.log(data)
+  response.status(201).json(data);
+});
 
 module.exports = notesRouter

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Comments from './Comments'
 
 
 const Blog = ({ blog, addLikes, username, deleteBlog }) => {
@@ -12,7 +13,6 @@ const Blog = ({ blog, addLikes, username, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
     borderWidth: 1,
     marginBottom: 5
   }
@@ -24,18 +24,18 @@ const Blog = ({ blog, addLikes, username, deleteBlog }) => {
   return (
     <div style={blogStyle} datacy = {'blogList'}>
       <div className ='defaultDisplay'>
-        <p>title: {blog.title}</p>
-        <p>author:{blog.author}</p>
-        <button onClick={toggleVisibility} className='show'>show</button>
+        <h2>blog app</h2>
+        Url: <a href={blog.url}>  {blog.url}</a>
+        <h2>Title: {blog.title}</h2>
+        <b>Likes:{blog.likes}</b><button onClick={addLikes} className='like'>like</button>
+        <p><button onClick={toggleVisibility} className='show'>show</button></p>
       </div>
       <div style={showWhenVisible} className='clickToShow'>
-        <p className='likes'>
-          likes: {blog.likes}
-        </p>
-        <button onClick={addLikes} className='like'>like</button>
-        <p>url: {blog.url}</p>
+        <b>added by:{blog.author}</b>
+
         <button onClick={toggleVisibility} className='close'>hide</button></div>
       <button onClick={deleteBlog}>remove</button>
+      <Comments comments={blog.comments} id = {blog._id}/>
     </div>
   )
 }

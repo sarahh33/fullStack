@@ -13,6 +13,13 @@ const blogsReducer = (state = initialState, action) => {
   case 'LIKE': {
     return state.map((note) => note.id !== action.data ? note : { ...note, likes: note.likes + 1 })
   }
+  case 'ADDCOMMENT': {
+    console.log('addcommentstart')
+    console.log(action.data.comment)
+    return state.map( blog => blog._id === action.data.id
+      ? { ...blog, comments: blog.comments.concat(action.data.comment) }
+      : blog)
+  }
   default:
     return state
   }
@@ -53,6 +60,17 @@ export const likeBlog = (blog) => {
     dispatch({
       type: 'LIKE',
       data: blog.id
+    })
+  }
+}
+
+export const addComment = ({ id, comment }) => {
+  console.log(`reducer ${id} id and ${comment}`)
+  return async (dispatch) => {
+    await blogService.createComment(id, comment)
+    dispatch({
+      type: 'ADDCOMMENT',
+      data: { id, comment }
     })
   }
 }
