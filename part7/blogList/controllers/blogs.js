@@ -68,14 +68,12 @@ notesRouter.put('/:id', async (request, response, next) => {
 })
 
 notesRouter.post('/:id/comments', async (request, response) => {
-  console.log(request.body.comment)
-  const data = await Blog.findByIdAndUpdate(
+  const blog = await Blog.findByIdAndUpdate(
     request.params.id,
-    {$push:{ comments: request.body.comment }}, // update operator $push
+    {$push:{ comments: request.body.comment }}, 
     { new: true },
   );
-  console.log(data)
-  response.status(201).json(data);
+  response.status(201).json(blog);
 });
 
 module.exports = notesRouter
