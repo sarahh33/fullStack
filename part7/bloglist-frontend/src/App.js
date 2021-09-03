@@ -16,6 +16,8 @@ import { userLogged, userLogin, userLogout } from './reducers/userReducer'
 import { likeBlog, toDeleteBlog } from './reducers/blogsReducer'
 import { userListDisplay } from './reducers/userListReducer'
 
+import { Form, Button } from 'react-bootstrap'
+
 const Menu = ({ user, token }) => {
   const style = { padding: 5, margin: 5 }
   return (
@@ -23,7 +25,7 @@ const Menu = ({ user, token }) => {
       <Link to='/' style={style}>Blogs</Link>
       <Link to='/users' style={style}>Users</Link>
       <b>{user.name} logged in </b>
-      <button onClick={token}>logout</button>
+      <Button onClick={token}>logout</Button>
     </div>
   )
 }
@@ -72,29 +74,30 @@ const App = () => {
   }
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          id='username'
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          id="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit" id='login'>login</button>
-    </form>
+    <div>
+      <Form  onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username: </Form.Label>
+          <Form.Control
+            type="text"
+            id='username'
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+          < Form.Label>
+            password:
+          </Form.Label>
+          <Form.Control
+            type="password"
+            id="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)} />
+          <Button type="submit" id='login'>login</Button>
+        </Form.Group>
+      </Form>
+    </div>
   )
 
   const addBlog = async (newObejct) => {
@@ -141,7 +144,7 @@ const App = () => {
 
   if (!user || user === undefined) {
     return (
-      <div>
+      <div className='container'>
         <h2>Log in to application</h2>
         <Notification />
         {loginForm()}
@@ -150,7 +153,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <Menu user={user} token={clearToken} />
       <Notification />
       <Switch>

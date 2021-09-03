@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Comments from './Comments'
+import { Button } from '@material-ui/core'
 
 
 const Blog = ({ blog, addLikes, username, deleteBlog }) => {
@@ -27,14 +28,14 @@ const Blog = ({ blog, addLikes, username, deleteBlog }) => {
         <h2>blog app</h2>
         Url: <a href={blog.url}>  {blog.url}</a>
         <h2>Title: {blog.title}</h2>
-        <b>Likes:{blog.likes}</b><button onClick={addLikes} className='like'>like</button>
-        <p><button onClick={toggleVisibility} className='show'>show</button></p>
+        <b>Likes:{blog.likes}</b><Button onClick={addLikes} >like</Button>
+        <p><Button onClick={toggleVisibility} className='show'>show</Button></p>
       </div>
       <div style={showWhenVisible} className='clickToShow'>
         <b>added by:{blog.author}</b>
 
-        <button onClick={toggleVisibility} className='close'>hide</button></div>
-      <button onClick={deleteBlog}>remove</button>
+        <Button onClick={toggleVisibility} >hide</Button></div>
+      <Button onClick={deleteBlog}>remove</Button>
       <Comments comments={blog.comments} id = {blog._id}/>
     </div>
   )

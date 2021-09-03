@@ -1,15 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Alert } from '@material-ui/lab'
 
 const Notification = () => {
   const { message,color } = useSelector(store => store.notification)
-  console.log(color)
-  if (message === null) {
+
+  if (!message) {
     return null
   }
   return (
     <div >
-      <p className={color}>{message}</p>
+      <Alert severity={color}>
+        {message}</Alert>
     </div>
   )
 }
