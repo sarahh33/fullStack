@@ -99,6 +99,7 @@ const typeDefs = gql`
         } 
   type Author {
       name: String!
+      id: ID!
       born: Int
       bookCount: Int!
   }
@@ -168,7 +169,7 @@ const resolvers = {
         born: (root) => root.born,
         bookCount: (root) => {
             const auList = books.map(book => book.author)
-            console.log(auList)
+    
             const number = auList.filter(au => au === root.name).length
             return number
 
@@ -181,7 +182,8 @@ const resolvers = {
         addBook:(root, args)=> {
             const book = {...args, id:uuid}
             books= books.concat(book)
-            if (!authors.includes(args.author)){
+            console.log(authors.find(a=> a.name ===args.author))
+            if (!authors.find(a=> a.name === args.author)){
                 const author = {name:args.author, id:uuid}
                 authors= authors.concat(author)
             }
